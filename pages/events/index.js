@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
 import { EventList } from "../../components/events/EventList";
 import { EventsSearch } from "../../components/events/EventsSearch";
-import { getAllEvents } from "../../dummy-data";
+import { getAllEvents } from "../../helpers/helpers-events";
 
 
 
-function events() {
+function Events(props) {
 
-    const router =  useRouter();
+    const router = useRouter();
 
-    const allEvents = getAllEvents();
+    const allEvents = props.events;
 
 
     const findEvent = (year, month) => {
@@ -27,4 +27,16 @@ function events() {
     );
 }
 
-export default events;
+export async function getStaticProps() {
+    const events = await getAllEvents();
+
+    return {
+        props: {
+            events: events
+        },
+        revalidate: 60
+    }
+
+}
+
+export default Events;

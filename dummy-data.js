@@ -31,6 +31,30 @@ export const DUMMY_EVENTS = [
   },
 ];
 
+const getData = async () => {
+
+  const response = await fetch('https://curso-react-bfcaf-default-rtdb.firebaseio.com/events.json');
+
+  const data = await response.json();
+
+  const dataTransformed = []
+  for (const key in data) {
+    dataTransformed.push({
+      id: key,
+      title: data[key].title,
+      description: data[key].description,
+      date: data[key].date,
+      image: data[key].image,
+      location: data[key].location,
+      isFeatured: data[key].isFeatured
+    })
+  }
+
+  return dataTransformed;
+
+}
+
+
 export function getFeaturedEvents() {
   return DUMMY_EVENTS.filter((event) => event.isFeatured);
 }
@@ -57,6 +81,5 @@ export function getEventById(id) {
 export const transformPath = (path) => {
   const numComverted = []
   path.map(map => numComverted.push(+map))
-
   return numComverted;
 }
